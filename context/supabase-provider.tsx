@@ -10,7 +10,7 @@ type SupabaseContextProps = {
 	user: User | null;
 	session: Session | null;
 	initialized?: boolean;
-	signUp: (email: string, password: string) => Promise<void>;
+	signUp: (email: string, password: string, fullName?: string) => Promise<void>;
 	signInWithPassword: (email: string, password: string) => Promise<void>;
 	signOut: () => Promise<void>;
 };
@@ -37,23 +37,38 @@ export const SupabaseProvider = ({ children }: SupabaseProviderProps) => {
 	const [session, setSession] = useState<Session | null>(null);
 	const [initialized, setInitialized] = useState<boolean>(false);
 
-	const signUp = async (email: string, password: string) => {
-		const { error } = await supabase.auth.signUp({
-			email,
-			password,
-		});
-		if (error) {
-			throw error;
+	const signIn = async (email: string, password: string) => {
+		try {
+			const { data, error } = await supabase.auth.signInWithPassword({
+				email,
+				password,
+			});
+
+			if (error) throw error;
+			return { data, error: null };
+		} catch (error: any) {
+			console.log('SignIn error:', error.message);
+			return { data: null, error };
 		}
 	};
 
-	const signInWithPassword = async (email: string, password: string) => {
-		const { error } = await supabase.auth.signInWithPassword({
-			email,
-			password,
-		});
-		if (error) {
-			throw error;
+	const signUp = async (email: string, password: string, fullName?: string) => {
+		try {
+			const { data, error } = await supabase.auth.signUp({
+				email,
+				password,
+				options: {
+					data: {
+						full_name: fullName,
+					},
+				},
+			});
+
+			if (error) throw error;
+			return { data, error: null };
+		} catch (error: any) {
+			console.log('SignUp error:', error.message);
+			return { data: null, error };
 		}
 	};
 
@@ -66,14 +81,21 @@ export const SupabaseProvider = ({ children }: SupabaseProviderProps) => {
 
 	useEffect(() => {
 		supabase.auth.getSession().then(({ data: { session } }) => {
+			console.log('Initial session:', session); // Add this debug log
 			setSession(session);
 			setUser(session ? session.user : null);
 			setInitialized(true);
 		});
 
 		supabase.auth.onAuthStateChange((_event, session) => {
+			console.log('Auth state changed:', session); // Add this debug log
 			setSession(session);
 			setUser(session ? session.user : null);
+			if (session) {
+				router.replace("/(app)/(protected)");
+			} else {
+				router.replace("/(app)/welcome");
+			}
 		});
 	}, []);
 
@@ -105,7 +127,7 @@ export const SupabaseProvider = ({ children }: SupabaseProviderProps) => {
 				session,
 				initialized,
 				signUp,
-				signInWithPassword,
+				signInWithPassword: signIn,
 				signOut,
 			}}
 		>

@@ -1,48 +1,84 @@
 {
-	"expo": {
-		"name": "ExpoSupabaseStarter",
-		"slug": "ExpoSupabaseStarter",
-		"scheme": "expo-supabase-starter",
-		"version": "1.0.0",
-		"orientation": "portrait",
-		"icon": "./assets/icon.png",
-		"userInterfaceStyle": "automatic",
-		"assetBundlePatterns": ["**/*"],
-		"newArchEnabled": true,
-		"ios": {
-			"supportsTablet": true,
-			"config": {
-				"usesNonExemptEncryption": false
-			},
-			"splash": {
-				"image": "./assets/splash.png",
-				"resizeMode": "cover",
-				"backgroundColor": "#ffffff",
-				"dark": {
-					"backgroundColor": "#000000",
-					"resizeMode": "cover",
-					"image": "./assets/splash-dark.png"
-				}
-			}
-		},
-		"android": {
-			"adaptiveIcon": {
-				"foregroundImage": "./assets/adaptive-icon.png"
-			},
-			"splash": {
-				"image": "./assets/splash.png",
-				"resizeMode": "cover",
-				"backgroundColor": "#ffffff",
-				"dark": {
-					"backgroundColor": "#000000",
-					"resizeMode": "cover",
-					"image": "./assets/splash-dark.png"
-				}
-			}
-		},
-		"experiments": {
-			"typedRoutes": true
-		},
-		"plugins": ["expo-router", "expo-secure-store"]
-	}
+  "expo": {
+    "name": "ExpoSupabaseStarter",
+    "slug": "ExpoSupabaseStarter",
+    "scheme": "expo-supabase-starter",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "automatic",
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "newArchEnabled": true,
+    "ios": {
+      "supportsTablet": true,
+      "config": {
+        "usesNonExemptEncryption": false
+      },
+      "splash": {
+        "image": "./assets/splash.png",
+        "resizeMode": "cover",
+        "backgroundColor": "#ffffff",
+        "dark": {
+          "backgroundColor": "#000000",
+          "resizeMode": "cover",
+          "image": "./assets/splash-dark.png"
+        }
+      },
+      "usesAppleSignIn": true,
+      "bundleIdentifier": "com.josh007.spoken"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png"
+      },
+      "splash": {
+        "image": "./assets/splash.png",
+        "resizeMode": "cover",
+        "backgroundColor": "#ffffff",
+        "dark": {
+          "backgroundColor": "#000000",
+          "resizeMode": "cover",
+          "image": "./assets/splash-dark.png"
+        }
+      },
+      "permissions": [
+        "android.permission.CAMERA",
+        "android.permission.RECORD_AUDIO"
+      ]
+    },
+    "experiments": {
+      "typedRoutes": true
+    },
+    "plugins": [
+      "expo-router",
+      "expo-secure-store",
+      [
+        "expo-speech-recognition",
+        {
+          "microphonePermission": "Allow $(PRODUCT_NAME) to use the microphone.",
+          "speechRecognitionPermission": "Allow $(PRODUCT_NAME) to use speech recognition.",
+          "androidSpeechServicePackages": ["com.google.android.googlequicksearchbox"]
+        }
+      ],
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Allow $(PRODUCT_NAME) to access your camera",
+          "microphonePermission": "Allow $(PRODUCT_NAME) to access your microphone",
+          "recordAudioAndroid": true
+        }
+      ]
+    ],
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "85eadaad-618a-485c-a1ff-a5be979a5027"
+      }
+    },
+    "owner": "josh007"
+  }
 }

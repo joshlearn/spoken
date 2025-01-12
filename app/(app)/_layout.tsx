@@ -15,6 +15,13 @@ export default function AppLayout() {
 			<Stack.Screen name="(protected)" />
 			<Stack.Screen name="welcome" />
 			<Stack.Screen
+				name="onboarding"
+				options={{
+					presentation: "modal",
+					animation: "slide_from_bottom",
+				}}
+			/>
+			<Stack.Screen
 				name="sign-up"
 				options={{
 					presentation: "modal",
@@ -54,6 +61,25 @@ export default function AppLayout() {
 			/>
 			<Stack.Screen
 				name="modal"
+				options={{
+					presentation: "modal",
+					headerShown: true,
+					headerTitle: "Modal",
+					headerStyle: {
+						backgroundColor:
+							colorScheme === "dark"
+								? colors.dark.background
+								: colors.light.background,
+					},
+					headerTintColor:
+						colorScheme === "dark"
+							? colors.dark.foreground
+							: colors.light.foreground,
+					gestureEnabled: true,
+				}}
+			/>
+			<Stack.Screen
+				name="settings"
 				options={{
 					presentation: "modal",
 					headerShown: true,
